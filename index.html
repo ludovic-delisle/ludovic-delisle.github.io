@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <script src="https://d3js.org/d3.v5.min.js"></script>
-<script src="circle_chart.js"></script>
-<link rel="stylesheet" href="circle_chart.css">
+<script src="src/circle_chart.js"></script>
+<link rel="stylesheet" href="src/circle_chart.css">
 
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,7 @@
 
 </div>
 <script>
-    let csv_file="../data/data_for_circle_chart.csv"
+    let csv_file="data/data_for_circle_chart.csv"
     let screen_part = 100
     create_svg(screen_part, 1.5*screen_part, "beige")
     add_chart("main_svg", screen_part/2, "beige", csv_file, 0, "Type")
