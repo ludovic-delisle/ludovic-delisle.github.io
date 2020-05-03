@@ -54,7 +54,7 @@ function add_legend(features){
         let leg=svg.append("text")
             .text(legend)
             .attr("transform", "translate("+px_txt+", 25) rotate(35)")
-            .attr("font-size", 20)
+            .attr("font-size", window.innerWidth/100)
             .style("fill", "black")
             .attr("alignment-baseline", "central")
             .attr("id", "legend_"+i)
@@ -189,6 +189,8 @@ function add_names_and_dots(names, nb_angles, size, posx, posy, pkm, feature){
             .attr("class", "labels_radar")
             .style("fill", "maroon")
         txt.attr("alignment-baseline", "middle")
+        txt.attr("font-size", window.innerWidth/130)
+
         let width = txt.node().getComputedTextLength()
         let a = i*2*Math.PI/nb_angles
         let transx = posx+(size+5)*Math.cos(a)
