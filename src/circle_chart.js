@@ -28,11 +28,62 @@ function add_chart(svg_name, color, csv_file, gen, feature){
         create_pokeball(diameter, posx, posy)
         add_select_gen(gen, feature)
         add_select_feature(gen, feature)
+        add_legend(features)
         add_names_and_dots(names , nb_angles,diameter, posx, posy, pkm, feature)
 
     })
 
 }
+
+function add_legend(features){
+    let svg = d3.select("#main_svg")
+    let l = features.length
+    let space = 0.5*window.innerWidth
+    let interval = space/l
+    let start = space/2
+    for(let i=0; i<features.length; i++){
+        let px = start+i*interval
+        let legend = features[i]
+        if(legend==0){
+            legend="not legendary"
+        }
+        if(legend==1){
+            legend="legendary"
+        }
+        let px_txt=px+10
+        let leg=svg.append("text")
+            .text(legend)
+            .attr("transform", "translate("+px_txt+", 25) rotate(35)")
+            .attr("font-size", 20)
+            .style("fill", "black")
+            .attr("alignment-baseline", "central")
+            .attr("id", "legend_"+i)
+        let l = document.getElementById("legend_"+i).getBoundingClientRect().width*1.3
+
+
+        let color = d3.csv("data/dot_colors.csv").then(function(d){
+            let feat=features[i]
+            let index = d.findIndex((k)=>{ return k.feature === feat})
+            svg.append("circle")
+                .attr("cx", px)
+                .attr("cy", 20)
+                .attr("r", 10)
+                .style("fill", d[index].color)
+            svg.append("rect")
+                .attr("transform", "translate("+px+", 10) rotate(35)")
+                .attr("width", l)
+                .attr("height", 18)
+                .attr("opacity", 0.2)
+                .style("fill", d[index].color)
+                .attr("class", "legend_rect")
+
+
+        });
+
+    }
+
+}
+
 function arcTween(newAngle, arc) {
     return function(d) {
         var interpolate = d3.interpolate(d.endAngle, newAngle);
@@ -354,7 +405,6 @@ function move_color_circle_and_names(id, pkm_list, radius, rad, posx, posy){
 function get_color(pkm, feature){
     let color = d3.csv("data/dot_colors.csv").then(function(d){
         let feat=pkm[feature]
-        console.log(feat)
         let index = d.findIndex((k)=>{ return k.feature === feat})
         return d[index].color
     });
@@ -519,15 +569,10 @@ function add_select_feature(gen, feature){
 }
 
 function update_chart(index, feature){
-    d3.selectAll(".pokeball").remove()
-    d3.select("#data_radar").remove()
-    d3.selectAll(".labels_radar").remove()
-    d3.select("#radar_base").remove()
-    d3.selectAll(".color_circle").remove()
-    d3.selectAll(".info_sheet").remove()
-    d3.selectAll(".select").remove()
-    d3.selectAll(".dropdown").remove()
-    let csv_file="data/data_for_circle_chart.csv"
+    d3.select("#main_svg").remove()
+    let w = window.innerWidth
+    let h = window.innerHeight
+    create_svg(w, h, "beige")
     add_chart("main_svg", "beige", csv_file, index, feature)
 }
 
