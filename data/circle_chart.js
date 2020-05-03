@@ -455,9 +455,8 @@ function add_select_gen(posx, posy, gen, feature){
 
 }
 
-function add_select_feature(posx, posy, gen, feature){
+function add_select_feature(gen, feature){
     let selection=["Type", "Legendary", "Body-Style", "Color"]
-
     if(gen==6){
         selection =["Type", "Legendary"]
     }
@@ -465,6 +464,7 @@ function add_select_feature(posx, posy, gen, feature){
     let l = "legendary".length
     var width = 4000, height = 3000;
     l=l*10;
+    px=window.innerWidth-l-15
     let main_svg = d3.select("#main_svg")
     svg=main_svg.append("svg")
         .attr("width", width)
@@ -476,13 +476,13 @@ function add_select_feature(posx, posy, gen, feature){
         .attr("class", "select")
 
     select.append("rect")
-        .attr("x", 2*l)
+        .attr("x", px)
         .attr("y",  10 )
         .attr("width", l)
         .attr("height", 30)
         .attr("class","dropdown");
     select.append("text")
-        .attr("x", 2.1*l)
+        .attr("x", px + 0.1*l)
         .attr("y",30 )
         .attr("id","mydropdown")
         .text( feature);
@@ -504,14 +504,14 @@ function add_select_feature(posx, posy, gen, feature){
 
     });
     options.append("rect")
-        .attr("x", 2*l)
+        .attr("x", px)
         .attr("y", function(d,i){ return 40 + i*30})
         .attr("width", l)
         .attr("height", 30)
         .attr("class","dropdown");
 
     options.append("text")
-        .attr("x", function(d){ return 2.1*l})
+        .attr("x", function(d){ return px+0.1*l})
         .attr("y", function(d,i){ return 60 + i*30})
         .text(function(d){ return d});
 
