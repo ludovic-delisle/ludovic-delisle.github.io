@@ -26,8 +26,8 @@ function add_chart(svg_name, color, csv_file, gen, feature){
         color=get_color(d[0], feature)
         let nb_angles = names.length
         create_pokeball(diameter, posx, posy)
-        add_select_gen(posx, posy, gen, feature)
-        add_select_feature(posx, posy, gen, feature)
+        add_select_gen(gen, feature)
+        add_select_feature(gen, feature)
         add_names_and_dots(names , nb_angles,diameter, posx, posy, pkm, feature)
 
     })
@@ -395,7 +395,7 @@ function get_feat(data, feature){
     return [features, ordered_pkm]
 }
 
-function add_select_gen(posx, posy, gen, feature){
+function add_select_gen(gen, feature){
     let selection=["generation 1", "generation 2", "generation 3", "generation 4", "generation 5", "generation 6", "generation 7"]
     var l=4;
     for(i=0;i<selection.length;i++){if(l<selection[i].length)l=selection[i].length};
@@ -464,7 +464,7 @@ function add_select_feature(gen, feature){
     let l = "legendary".length
     var width = 4000, height = 3000;
     l=l*10;
-    px=window.innerWidth-l-15
+    px=(window.innerWidth*0.95)-l
     let main_svg = d3.select("#main_svg")
     svg=main_svg.append("svg")
         .attr("width", width)
