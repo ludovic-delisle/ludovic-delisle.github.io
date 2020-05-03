@@ -1,20 +1,18 @@
 function create_svg(w, h, color){
-    let width_ = window.innerWidth*w/100
-    let height_ = window.innerHeight*h/100
     let canvas = d3.select("body")
         .append("svg")
-        .attr("width", width_)
-        .attr("height", height_)
+        .attr("width", w)
+        .attr("height", h)
         .attr("id", "main_svg")
         .style("background-color", color)
 
 }
 
-
-function add_chart(svg_name, size, color, csv_file, gen, feature){
-    let posx=  window.innerWidth*size/100
-    let posy=  1.4*(window.innerHeight*size/100)
-    let diameter = 6*size
+function add_chart(svg_name, color, csv_file, gen, feature){
+    let size= window.innerWidth/3
+    let posx=  window.innerWidth/2
+    let posy=  window.innerHeight/2
+    let diameter = size/2
     d3.csv(csv_file).then(function(d){
         let gen_pkm = get_gen(d, gen)
         let feat_and_pkm = get_feat(gen_pkm, feature)
@@ -25,7 +23,6 @@ function add_chart(svg_name, size, color, csv_file, gen, feature){
                 name: k.name
             }
         });
-        console.log(d3.version)
         color=get_color(d[0], feature)
         let nb_angles = names.length
         create_pokeball(diameter, posx, posy)
@@ -202,7 +199,7 @@ function move_color_circle_and_names(id, pkm_list, radius, rad, posx, posy){
     let ease = d3.easeExp
 
 
-    d3.csv("../data/pvpoke_1v1_cp1500_2019.csv").then(function(d){
+    d3.csv("data/pvpoke_1v1_cp1500_2019.csv").then(function(d){
 
         d3.selection.prototype.moveToFront = function() {
             return this.each(function(){
@@ -355,7 +352,7 @@ function move_color_circle_and_names(id, pkm_list, radius, rad, posx, posy){
 }
 
 function get_color(pkm, feature){
-    let color = d3.csv("../data/dot_colors.csv").then(function(d){
+    let color = d3.csv("data/dot_colors.csv").then(function(d){
         let feat=pkm[feature]
         console.log(feat)
         let index = d.findIndex((k)=>{ return k.feature === feat})
@@ -402,7 +399,7 @@ function add_select_gen(posx, posy, gen, feature){
     let selection=["generation 1", "generation 2", "generation 3", "generation 4", "generation 5", "generation 6", "generation 7"]
     var l=4;
     for(i=0;i<selection.length;i++){if(l<selection[i].length)l=selection[i].length};
-    var width = 400, height = 3000;
+    var width = 400, height = 600;
     l=l*10;
     let main_svg = d3.select("#main_svg")
     svg=main_svg.append("svg")
@@ -479,13 +476,13 @@ function add_select_feature(posx, posy, gen, feature){
         .attr("class", "select")
 
     select.append("rect")
-        .attr("x", 3/2*posx)
+        .attr("x", 2*l)
         .attr("y",  10 )
         .attr("width", l)
         .attr("height", 30)
         .attr("class","dropdown");
     select.append("text")
-        .attr("x", 1.51*posx)
+        .attr("x", 2.1*l)
         .attr("y",30 )
         .attr("id","mydropdown")
         .text( feature);
@@ -507,14 +504,14 @@ function add_select_feature(posx, posy, gen, feature){
 
     });
     options.append("rect")
-        .attr("x", 3/2*posx)
+        .attr("x", 2*l)
         .attr("y", function(d,i){ return 40 + i*30})
         .attr("width", l)
         .attr("height", 30)
         .attr("class","dropdown");
 
     options.append("text")
-        .attr("x", function(d){ return 1.51*posx})
+        .attr("x", function(d){ return 2.1*l})
         .attr("y", function(d,i){ return 60 + i*30})
         .text(function(d){ return d});
 
@@ -528,9 +525,10 @@ function update_chart(index, feature){
     d3.select("#radar_base").remove()
     d3.selectAll(".color_circle").remove()
     d3.selectAll(".info_sheet").remove()
-    let csv_file="../data/data_for_circle_chart.csv"
-    let screen_part = 100
-    add_chart("main_svg", screen_part/2, "beige", csv_file, index, feature)
+    d3.selectAll(".select").remove()
+    d3.selectAll(".dropdown").remove()
+    let csv_file="data/data_for_circle_chart.csv"
+    add_chart("main_svg", "beige", csv_file, index, feature)
 }
 
 function get_angle(x, y, cx, cy){
