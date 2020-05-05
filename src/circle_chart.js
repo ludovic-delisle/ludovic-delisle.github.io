@@ -8,6 +8,59 @@ function create_svg(w, h, color){
 
 }
 
+var sound_on = true;
+var fuck = 18;
+function add_sound_icon(){
+
+    let pic = d3.select("#main_svg")
+        .append("image")
+        .attr("xlink:href", "src/images/sound.png")
+        .attr("x", 140)
+        .attr("y", 15)
+        .attr("width", 20)
+        .attr("height", 20)
+
+    if(sound_on===false){ draw_cross(140, 15, 20, 20)}
+
+    let rect = d3.select("#main_svg")
+        .append("rect")
+        .attr("x",140)
+        .attr("y", 15)
+        .attr("width", 20)
+        .attr("height", 20)
+        .attr("opacity", 0)
+        .on("click", function(){
+            sound_on = !sound_on
+            if(sound_on===false){ draw_cross(140, 15, 20, 20)}
+            else{d3.selectAll(".sound_cross").remove()}
+        })
+
+
+}
+function draw_cross(x, y, width, height){
+    let line_1 = d3.select("#main_svg")
+        .append("line")
+        .attr("x1",x)
+        .attr("y1",y)
+        .attr("x2",x+width)
+        .attr("y2",y+width)
+        .style("stroke", "red")
+        .style("stroke-width", 2)
+        .attr("class", "sound_cross")
+
+    let line_2 = d3.select("#main_svg")
+        .append("line")
+        .attr("x1",x+width)
+        .attr("y1",y)
+        .attr("x2",x)
+        .attr("y2",y+width)
+        .style("stroke", "red")
+        .style("stroke-width", 2)
+        .attr("class", "sound_cross")
+
+
+}
+
 function add_chart(svg_name, color, csv_file, gen, feature){
     let size= window.innerWidth/3
     let posx=  window.innerWidth/2
@@ -23,8 +76,10 @@ function add_chart(svg_name, color, csv_file, gen, feature){
                 name: k.name
             }
         });
+
         color=get_color(d[0], feature)
         let nb_angles = names.length
+        add_sound_icon()
         create_pokeball(diameter, posx, posy)
         add_select_gen(gen, feature)
         add_select_feature(gen, feature)
@@ -188,8 +243,8 @@ function add_names_and_dots(names, nb_angles, size, posx, posy, pkm, feature){
             .attr("id", "labels_radar_"+pkm[i].pokedex_number)
             .attr("class", "labels_radar")
             .style("fill", "maroon")
-        txt.attr("alignment-baseline", "middle")
-        txt.attr("font-size", window.innerWidth/130)
+            .attr("alignment-baseline", "middle")
+            .attr("font-size", window.innerWidth/130)
 
         let width = txt.node().getComputedTextLength()
         let a = i*2*Math.PI/nb_angles
@@ -214,9 +269,18 @@ function add_names_and_dots(names, nb_angles, size, posx, posy, pkm, feature){
                     create_ID_card(posx, posy, size, a, pokemon)
                     })
                 .on("click", function(){
+                    let url_id = id.toString()
+
+                    if(id<100){
+                        url_id="0"+url_id
+                    }
+                    if(id<10){
+                        url_id="0"+url_id
+                    }
                     d3.selectAll(".info_sheet").remove()
                     create_info_sheet(pokemon, gen, feature)
                     move_color_circle_and_names( id, pkm, size, radius, posx, posy)
+                    if(sound_on){playSound("http://pokedream.com/pokedex/images/cries/"+url_id+".mp3")}
                     })
                 .on("mouseout", function(){
                     d3.selectAll(".id_card").remove()
@@ -323,6 +387,8 @@ function move_color_circle_and_names(id, pkm_list, radius, rad, posx, posy){
 
             nom.transition()
                 .attr("transform", "translate("+name_x+","+name_y+") rotate("+rot+")")
+                .style("fill", "maroon")
+                .attr("font-size", window.innerWidth/130)
                 .duration(duration)
 
 
@@ -368,6 +434,8 @@ function move_color_circle_and_names(id, pkm_list, radius, rad, posx, posy){
             }
             nom.transition()
                 .attr("transform", "translate("+name_x+","+name_y+") rotate("+rot+")")
+                .style("fill", "maroon")
+                .attr("font-size", window.innerWidth/130)
                 .duration(duration)
 
 
@@ -391,11 +459,15 @@ function move_color_circle_and_names(id, pkm_list, radius, rad, posx, posy){
             .ease(ease)
 
         let nom = d3.select("#labels_radar_"+id)
-        posy_txt = posy/2
-
+        let width = window.innerWidth/4
+        let height = window.innerHeight/1.5
+        let posx_txt= (window.innerWidth-width)/2+width/20
+        let posy_txt= (window.innerHeight-height)/2+width/20
         nom.transition()
-            .attr("text-anchor", "middle")
-            .attr("transform", "translate("+posx+","+posy_txt+") rotate(0)")
+            .attr("text-anchor", "start")
+            .attr("transform", "translate("+posx_txt+","+posy_txt+") rotate(0)")
+            .attr("font-size", window.innerHeight/25)
+            .style("fill", "black")
             .duration(duration)
 
     });
@@ -651,15 +723,7 @@ function create_ID_card(posx, posy, size, angle, pkm){
     }
 
     let id_card = d3.select("#main_svg")
-    id_card.append("line")
-        .attr("x1", cx)
-        .attr("x2", px)
-        .attr("y1", cy)
-        .attr("y2", py)
-        .attr("class", "id_card")
-        .attr("opacity", 0.6)
-        .style("stroke", "red")
-        .style("stroke-width", 2)
+    
 
     id_card.append("rect")
         .attr("width", 1.05*rect_size)
@@ -814,7 +878,16 @@ function create_info_sheet(pkm, index, feature){
             }
         });
     };
-
+    let white_rect=info_sheet.append("rect")
+        .attr("x", (window.innerWidth-width)/2)
+        .attr("y", (window.innerHeight-height)/2+height/15)
+        .attr("width", width/2)
+        .attr("height", width/2+width/20)
+        .attr("fill", "white")
+        .attr("stroke", "black")
+        .style("stroke-width", 3)
+        .attr("class", "info_sheet")
+        .moveToBack()
     get_color(pkm, feature).then(function(color){
 
         let rect=info_sheet.append("rect")
@@ -837,6 +910,18 @@ function create_info_sheet(pkm, index, feature){
             .attr("opacity", 0.5)
             .attr("class", "info_sheet")
             .moveToBack()
+
+        let color_band_description= info_sheet.append("rect")
+            .attr("x", (window.innerWidth-width)/2)
+            .attr("y", (window.innerHeight)/2 )
+            .attr("width", width)
+            .attr("height", height/5)
+            .attr("fill", color)
+            .attr("opacity", 0.5)
+            .attr("class", "info_sheet")
+            .moveToBack()
+
+
 
     })
 
@@ -867,22 +952,96 @@ function create_info_sheet(pkm, index, feature){
         .attr("class", "info_sheet")
 
 
+
     let name = pkm["name"]
     let name_url = name.charAt(0).toLowerCase()+name.slice(1)
     info_sheet.append("image")
         .attr("xlink:href", "https://img.pokemondb.net/artwork/large/"+name_url+".jpg")
-        .attr("x", (window.innerWidth-width)/2)
+        .attr("x", (window.innerWidth-width)/1.99)
         .attr("y", (window.innerHeight-height)/2 +width/10)
-        .attr("width", width/2)
-        .attr("height", width/2)
+        .attr("width", width/2.1)
+        .attr("height", width/2.1)
         .attr("class", "info_sheet")
 
+
+    let x_txt = window.innerWidth/1.98
+    let y_txt_st = (window.innerHeight-height)/2 +width/6
+    let stats = ["HP", "Attack", "Defense", "Sp.Atk", "Sp.Def", "Speed"]
+    let labels = ["hp", "atk", "def", "sp_atk", "sp_def", "spd"]
+    let stat_val=[]
+    for(let i = 0 ; i< labels.length; i++){
+        let d = pkm[labels[i]]
+        stat_val[i] = d
+    }
+    for(let i =0; i<6; i++){
+        info_sheet.append("text")
+            .text(stats[i])
+            .attr("x", x_txt)
+            .attr("y", y_txt_st+ 1.4*i*window.innerHeight/40)
+            .attr("font-size", window.innerHeight/40)
+            .style("fill", "black")
+            .attr("class", "info_sheet")
+
+        info_sheet.append("text")
+            .text(stat_val[i].toString())
+            .attr("x", x_txt+0.4*width)
+            .attr("y", y_txt_st+ 1.4*i*window.innerHeight/40)
+            .attr("font-size", window.innerHeight/40)
+            .style("fill", "black")
+            .attr("class", "info_sheet")
+    }
     info_sheet.append("text")
-        .text(name)
-        .attr("x", (window.innerWidth-width)/2+width/20)
-        .attr("y", (window.innerHeight-height)/2+width/20)
+        .text("description")
+        .attr("x", window.innerWidth/2-0.49*width)
+        .attr("y", window.innerHeight/1.9)
+        .attr("font-size", window.innerHeight/40)
         .style("fill", "black")
         .attr("class", "info_sheet")
+        .attr("text-decoration", "underline")
+
+    let id_ = pkm["pokedex_number"]-1
+    d3.csv("data/descriptions.csv").then(function(d){
+
+        let text = d[id_].description
+        let text_l = text.length
+        let char_per_line = parseInt(window.innerWidth/30)
+        let start_line=0
+        let end_line=char_per_line
+        line_nbr=0
+        while(end_line<=text_l){
+            console.log(line_nbr)
+            console.log(end_line)
+            console.log(text_l)
+            if(text[end_line]==" " || end_line==text_l) {
+                info_sheet.append("text")
+                    .text(text.slice(start_line, end_line))
+                    .attr("x", (window.innerWidth-width)/2+window.innerWidth/100)
+                    .attr("y", (window.innerHeight)/1.8+line_nbr*window.innerHeight/40)
+                    .attr("class", "info_sheet")
+                    .attr("font-size", window.innerWidth/125)
+                    .style("fill", "black")
+                line_nbr+=1
+                start_line=end_line+1
+                end_line += char_per_line
+
+                if(end_line>text_l){
+                    end_line=text_l
+                    info_sheet.append("text")
+                        .text(text.slice(start_line, end_line))
+                        .attr("x", (window.innerWidth-width)/2+window.innerWidth/100)
+                        .attr("y", (window.innerHeight)/1.8+line_nbr*window.innerHeight/40)
+                        .attr("font-size", window.innerWidth/125)
+                        .attr("class", "info_sheet")
+                        .style("fill", "black")
+                }
+            }
+            end_line++
+        }
+
+
+    })
+
+
 
 
     let invisible_rect = info_sheet.append("rect")
@@ -895,4 +1054,11 @@ function create_info_sheet(pkm, index, feature){
         .on("click", function(){
             update_chart(index-1, feature)
         })
+}
+
+
+
+function playSound(soundfile) {
+    let sound =new Audio(soundfile)
+    sound.play();
 }

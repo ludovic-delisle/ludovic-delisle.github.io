@@ -248,7 +248,7 @@ pokedex_number,name,Type,Legendary,generation,Body-Style,Color,hp,def,atk,sp_def
 247,Pupitar,rock,0,2,serpentine_body,Grey,70,70,84,70,65,51,410
 248,Tyranitar,rock,0,2,bipedal_tailed,Green,100,150,164,120,95,71,700
 249,Lugia,psychic,1,2,two_wings,White,106,130,90,154,90,110,680
-250,Ho-Oh,fire,1,2,two_wings,Red,106,90,130,154,110,90,680
+250,Ho-oh,fire,1,2,two_wings,Red,106,90,130,154,110,90,680
 251,Celebi,psychic,1,2,bipedal_tailless,Green,100,100,100,100,100,100,600
 252,Treecko,grass,0,3,bipedal_tailed,Green,40,35,45,55,65,70,310
 253,Grovyle,grass,0,3,bipedal_tailed,Green,50,45,65,65,85,95,405
