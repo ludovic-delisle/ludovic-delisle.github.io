@@ -280,7 +280,9 @@ function add_names_and_dots(names, nb_angles, size, posx, posy, pkm, feature){
                     d3.selectAll(".info_sheet").remove()
                     create_info_sheet(pokemon, gen, feature)
                     move_color_circle_and_names( id, pkm, size, radius, posx, posy)
-                    if(sound_on){playSound("http://pokedream.com/pokedex/images/cries/"+url_id+".mp3")}
+                    let name = pokemon["name"]
+                    let name_url = name.charAt(0).toLowerCase()+name.slice(1)
+                    if(sound_on){playSound("https://play.pokemonshowdown.com/audio/cries/"+name_url+".mp3")}
                     })
                 .on("mouseout", function(){
                     d3.selectAll(".id_card").remove()
@@ -1009,9 +1011,6 @@ function create_info_sheet(pkm, index, feature){
         let end_line=char_per_line
         line_nbr=0
         while(end_line<=text_l){
-            console.log(line_nbr)
-            console.log(end_line)
-            console.log(text_l)
             if(text[end_line]==" " || end_line==text_l) {
                 info_sheet.append("text")
                     .text(text.slice(start_line, end_line))
