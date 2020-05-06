@@ -723,7 +723,7 @@ function create_ID_card(posx, posy, size, angle, pkm){
     }
 
     let id_card = d3.select("#main_svg")
-    
+
 
     id_card.append("rect")
         .attr("width", 1.05*rect_size)
