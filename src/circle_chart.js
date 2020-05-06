@@ -1017,7 +1017,7 @@ function create_info_sheet(pkm, index, feature, pkm_list){
                     .attr("x", (window.innerWidth-width)/2+window.innerWidth/100)
                     .attr("y", (window.innerHeight)/1.8+line_nbr*window.innerHeight/70)
                     .attr("class", "info_sheet")
-                    .attr("font-size", window.innerWidth/125)
+                    .attr("font-size", "90%")
                     .style("fill", "black")
                 line_nbr+=1
                 start_line=end_line+1
