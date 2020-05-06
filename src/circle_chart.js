@@ -9,7 +9,7 @@ function create_svg(w, h, color){
 }
 
 var sound_on = true;
-var fuck = 18;
+
 function add_sound_icon(){
 
     let pic = d3.select("#main_svg")
@@ -278,8 +278,8 @@ function add_names_and_dots(names, nb_angles, size, posx, posy, pkm, feature){
                         url_id="0"+url_id
                     }
                     d3.selectAll(".info_sheet").remove()
-                    create_info_sheet(pokemon, gen, feature)
                     move_color_circle_and_names( id, pkm, size, radius, posx, posy)
+                    create_info_sheet(pokemon, gen, feature, pkm)
                     let name = pokemon["name"]
                     let name_url = name.charAt(0).toLowerCase()+name.slice(1)
                     if(sound_on){playSound("https://play.pokemonshowdown.com/audio/cries/"+name_url+".mp3")}
@@ -316,7 +316,8 @@ function move_color_circle_and_names(id, pkm_list, radius, rad, posx, posy){
     winner_x=posx + window.innerWidth/3.25
     winner_y=posy
     let ease = d3.easeExp
-
+    let winners=[]
+    let loosers=[]
 
     d3.csv("data/pvpoke_1v1_cp1500_2019.csv").then(function(d){
 
@@ -327,8 +328,6 @@ function move_color_circle_and_names(id, pkm_list, radius, rad, posx, posy){
         };
 
         let chosen = d[id-1]
-        let loosers= []
-        let winners= []
         let len = pkm_list.length
 
         for(let i =0; i<len; i++){
@@ -341,6 +340,8 @@ function move_color_circle_and_names(id, pkm_list, radius, rad, posx, posy){
             }
 
         }
+        win=winners.length
+        loss=loosers.length
         let rad_win = radius*winners.length/len
         let rad_loose = radius*loosers.length/len
         d3.selectAll(".pokeball").remove()
@@ -473,7 +474,6 @@ function move_color_circle_and_names(id, pkm_list, radius, rad, posx, posy){
             .duration(duration)
 
     });
-
 
 
 }
@@ -864,7 +864,7 @@ function add_data_radar(data, nb_angles, size, posx, posy, nb_sep, col){
 
 }
 
-function create_info_sheet(pkm, index, feature){
+function create_info_sheet(pkm, index, feature, pkm_list){
 
     let width = window.innerWidth/4
     let height = window.innerHeight/1.5
@@ -1039,6 +1039,70 @@ function create_info_sheet(pkm, index, feature){
 
 
     })
+    let loosers=[]
+    let winners=[]
+    d3.csv("data/pvpoke_1v1_cp1500_2019.csv").then(function(d) {
+        let chosen = d[id_]
+        let len = pkm_list.length
+        for (let i = 0; i < len; i++) {
+            poke_list_id = pkm_list[i].pokedex_number
+            if (chosen[poke_list_id] == 1) {
+                loosers.push(poke_list_id)
+            } else if (chosen[poke_list_id] == -1) {
+                winners.push(poke_list_id)
+            }
+
+        }
+        info_sheet.append("text")
+            .text(winners.length)
+            .attr("x", (window.innerWidth)/2+window.innerWidth/100)
+            .attr("y", (window.innerHeight)/1.25)
+            .attr("font-size", window.innerWidth/15)
+            .attr("class", "info_sheet")
+            .style("fill", "black")
+        info_sheet.append("text")
+            .text(loosers.length)
+            .attr("x", (window.innerWidth-width)/2+window.innerWidth/100)
+            .attr("y", (window.innerHeight)/1.25)
+            .attr("font-size", window.innerWidth/15)
+            .attr("class", "info_sheet")
+            .style("fill", "black")
+        info_sheet.append("text")
+            .text("defeats")
+            .attr("x", (window.innerWidth)/2+window.innerWidth/100)
+            .attr("y", (window.innerHeight)/1.45)
+            .attr("font-size", window.innerWidth/30)
+            .attr("class", "info_sheet")
+            .style("fill", "black")
+        info_sheet.append("text")
+            .text("victories")
+            .attr("x", (window.innerWidth-width)/2+window.innerWidth/200)
+            .attr("y", (window.innerHeight)/1.45)
+            .attr("font-size", window.innerWidth/30)
+            .attr("class", "info_sheet")
+            .style("fill", "black")
+        info_sheet.append("rect")
+            .attr("x", (window.innerWidth-width)/2)
+            .attr("y", (window.innerHeight)/2+height/5 )
+            .attr("width", width/2)
+            .attr("height", window.innerHeight/5)
+            .style("fill", "none")
+            .attr("stroke-opacity", 1)
+            .attr("stroke", "black")
+            .attr("class", "info_sheet")
+        info_sheet.append("rect")
+            .attr("x", (window.innerWidth)/2)
+            .attr("y", (window.innerHeight)/2+height/5 )
+            .attr("width", width/2)
+            .attr("height", window.innerHeight/5)
+            .style("fill", "none")
+            .attr("stroke-opacity", 1)
+            .attr("stroke", "black")
+            .attr("class", "info_sheet")
+
+    })
+
+
 
 
 
@@ -1054,8 +1118,6 @@ function create_info_sheet(pkm, index, feature){
             update_chart(index-1, feature)
         })
 }
-
-
 
 function playSound(soundfile) {
     let sound =new Audio(soundfile)
