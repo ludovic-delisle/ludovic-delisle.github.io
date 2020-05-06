@@ -111,6 +111,7 @@ function add_legend(features){
             .attr("transform", "translate("+px_txt+", 25) rotate(35)")
             .attr("font-size", window.innerWidth/100)
             .style("fill", "black")
+            .attr("font-family", "arial, sans-serif")
             .attr("alignment-baseline", "central")
             .attr("id", "legend_"+i)
         let l = document.getElementById("legend_"+i).getBoundingClientRect().width*1.3
@@ -243,8 +244,9 @@ function add_names_and_dots(names, nb_angles, size, posx, posy, pkm, feature){
             .attr("id", "labels_radar_"+pkm[i].pokedex_number)
             .attr("class", "labels_radar")
             .style("fill", "maroon")
+            .attr("font-family", "arial, sans-serif")
             .attr("alignment-baseline", "middle")
-            .attr("font-size", window.innerWidth/130)
+            .attr("font-size", "100%")
 
         let width = txt.node().getComputedTextLength()
         let a = i*2*Math.PI/nb_angles
@@ -547,6 +549,7 @@ function add_select_gen(gen, feature){
     select.append("text")
         .attr("x", 15)
         .attr("y",30 )
+        .attr("font-family", "arial, sans-serif")
         .attr("id","mydropdown")
         .text( selection[gen]);
     var options = svg.selectAll(".myBars")
@@ -575,6 +578,7 @@ function add_select_gen(gen, feature){
 
     options.append("text")
         .attr("x", function(d){ return 15})
+        .attr("font-family", "arial, sans-serif")
         .attr("y", function(d,i){ return 60 + i*30})
         .text(function(d){ return d});
 
@@ -610,6 +614,7 @@ function add_select_feature(gen, feature){
     select.append("text")
         .attr("x", px + 0.1*l)
         .attr("y",30 )
+        .attr("font-family", "arial, sans-serif")
         .attr("id","mydropdown")
         .text( feature);
     var options = svg.selectAll(".myBars")
@@ -639,6 +644,7 @@ function add_select_feature(gen, feature){
     options.append("text")
         .attr("x", function(d){ return px+0.1*l})
         .attr("y", function(d,i){ return 60 + i*30})
+        .attr("font-family", "arial, sans-serif")
         .text(function(d){ return d});
 
 
@@ -754,6 +760,7 @@ function create_ID_card(posx, posy, size, angle, pkm){
         .attr("x", px-rect_size/2+5)
         .attr("y", py-rect_size*0.3)
         .style("fill", "black")
+        .attr("font-family", "arial, sans-serif")
         .attr("class", "id_card")
         .text(name)
 
@@ -811,6 +818,7 @@ function create_radar(data, nb_angles, size, posx, posy, nb_sep, col){
         .text(outer_circle)
         .attr("transform", "translate("+transx+", "+posy+") rotate(90)")
         .attr("text-anchor", "middle")
+        .attr("font-family", "arial, sans-serif")
         .attr("class", "id_card")
         .style("fill", col)
 
@@ -844,6 +852,7 @@ function add_data_radar(data, nb_angles, size, posx, posy, nb_sep, col){
             .attr("x", transx)
             .attr("y", transy)
             .text(labels[i])
+            .attr("font-family", "arial, sans-serif")
             .attr("class", "id_card")
             .style("fill", "maroon")
 
@@ -981,6 +990,7 @@ function create_info_sheet(pkm, index, feature, pkm_list){
             .attr("x", x_txt)
             .attr("y", y_txt_st+ 1.4*i*window.innerHeight/40)
             .attr("font-size", window.innerHeight/40)
+            .attr("font-family", "arial, sans-serif")
             .style("fill", "black")
             .attr("class", "info_sheet")
 
@@ -989,6 +999,7 @@ function create_info_sheet(pkm, index, feature, pkm_list){
             .attr("x", x_txt+0.4*width)
             .attr("y", y_txt_st+ 1.4*i*window.innerHeight/40)
             .attr("font-size", window.innerHeight/40)
+            .attr("font-family", "arial, sans-serif")
             .style("fill", "black")
             .attr("class", "info_sheet")
     }
@@ -996,7 +1007,8 @@ function create_info_sheet(pkm, index, feature, pkm_list){
         .text("description")
         .attr("x", window.innerWidth/2-0.49*width)
         .attr("y", window.innerHeight/1.9)
-        .attr("font-size", window.innerHeight/40)
+        .attr("font-size", "120%")
+        .attr("font-family", "arial, sans-serif")
         .style("fill", "black")
         .attr("class", "info_sheet")
         .attr("text-decoration", "underline")
@@ -1015,9 +1027,10 @@ function create_info_sheet(pkm, index, feature, pkm_list){
                 info_sheet.append("text")
                     .text(text.slice(start_line, end_line))
                     .attr("x", (window.innerWidth-width)/2+window.innerWidth/100)
-                    .attr("y", (window.innerHeight)/1.8+line_nbr*window.innerHeight/70)
+                    .attr("y", (window.innerHeight)/1.8+line_nbr*window.innerHeight/60)
                     .attr("class", "info_sheet")
-                    .attr("font-size", "90%")
+                    .attr("font-size", "85%")
+                    .attr("font-family", "arial, sans-serif")
                     .style("fill", "black")
                 line_nbr+=1
                 start_line=end_line+1
@@ -1028,8 +1041,9 @@ function create_info_sheet(pkm, index, feature, pkm_list){
                     info_sheet.append("text")
                         .text(text.slice(start_line, end_line))
                         .attr("x", (window.innerWidth-width)/2+window.innerWidth/100)
-                        .attr("y", (window.innerHeight)/1.8+line_nbr*window.innerHeight/70)
-                        .attr("font-size", window.innerWidth/125)
+                        .attr("y", (window.innerHeight)/1.8+line_nbr*window.innerHeight/60)
+                        .attr("font-size", "85%")
+                        .attr("font-family", "arial, sans-serif")
                         .attr("class", "info_sheet")
                         .style("fill", "black")
                 }
@@ -1057,28 +1071,32 @@ function create_info_sheet(pkm, index, feature, pkm_list){
             .text(winners.length)
             .attr("x", (window.innerWidth)/2+window.innerWidth/100)
             .attr("y", (window.innerHeight)/1.25)
-            .attr("font-size", window.innerWidth/15)
+            .attr("font-size", "500%")
+            .attr("font-family", "arial, sans-serif")
             .attr("class", "info_sheet")
             .style("fill", "black")
         info_sheet.append("text")
             .text(loosers.length)
             .attr("x", (window.innerWidth-width)/2+window.innerWidth/100)
             .attr("y", (window.innerHeight)/1.25)
-            .attr("font-size", window.innerWidth/15)
+            .attr("font-size", "500%")
+            .attr("font-family", "arial, sans-serif")
             .attr("class", "info_sheet")
             .style("fill", "black")
         info_sheet.append("text")
             .text("defeats")
             .attr("x", (window.innerWidth)/2+window.innerWidth/100)
             .attr("y", (window.innerHeight)/1.45)
-            .attr("font-size", window.innerWidth/30)
+            .attr("font-size", "250%")
+            .attr("font-family", "arial, sans-serif")
             .attr("class", "info_sheet")
             .style("fill", "black")
         info_sheet.append("text")
             .text("victories")
             .attr("x", (window.innerWidth-width)/2+window.innerWidth/200)
             .attr("y", (window.innerHeight)/1.45)
-            .attr("font-size", window.innerWidth/30)
+            .attr("font-size", "250%")
+            .attr("font-family", "arial, sans-serif")
             .attr("class", "info_sheet")
             .style("fill", "black")
         info_sheet.append("rect")
