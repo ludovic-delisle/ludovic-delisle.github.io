@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<script src="src/circle_chart.js"></script>
+<script src="src/circle_chart_f.js"></script>
+<script src="src/add_text_circle_chart.js"></script>
 <link rel="stylesheet" href="src/circle_chart.css">
+<script src="https://d3js.org/d3.v5.js"></script>
 
 <head>
     <meta charset="UTF-8">
-    <title>spider chart</title>
+    <title>Circle chart</title>
 </head>
 <body>
 <div>
 
 </div>
 <script>
+    let d3_ludo = d3
+    let color_txt_titel = "#686868"
+    let color_txt_bod = "#9c9c9c"
     let csv_file="data/data_for_circle_chart.csv"
     let w = window.innerWidth
-    let h = window.innerHeight
-    create_svg(w, h, "beige")
-    add_chart("main_svg", "beige", csv_file, 0, "Type")
-
-
-
-
+    let h = window.innerHeight*1.6
+    create_svg_txt(w, h, "#f8f8f8")
+    create_svg(w, h, "#f8f8f8")
+    add_text_desc(color_txt_titel, color_txt_bod)
+    add_chart("main_svg", csv_file, 0, "Type", d3_ludo)
 </script>
 
 </body>
