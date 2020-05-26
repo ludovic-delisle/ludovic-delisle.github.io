@@ -694,7 +694,7 @@ function add_select_feature(gen, feature, d3_version){
         selection =["Type", "Legendary"]
     }
     let features=selection
-    let l = "legendary".length
+    let l = "Body Style".length
     var width = 4000, height = 3000;
     l=l*10;
     px=140

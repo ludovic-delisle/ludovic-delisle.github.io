@@ -1,14 +1,16 @@
 
 text {
-    fill: #f5f5dc
+    fill: #f7fbfa
 }
 .dropdown .option {
     display:none;
 }
 rect.dropdown {
-    stroke-width:0.5;
-    stroke: rgb(139, 0, 10);
-    fill: #a0522d;
+    float: right;
+    border-radius: 15px;
+    fill: #78c2ad;
+    border-collapse: separate;
+
 }
 .dropdown:hover .option {
     display:unset;
@@ -18,4 +20,10 @@ rect.dropdown {
 }
 circle.name_dot {
     fill: rgb(139, 0, 10)
+}
+svg{
+  position: "relative"
+}
+svg.circle{
+  position: "relative"
 }
